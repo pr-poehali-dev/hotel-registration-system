@@ -10,20 +10,47 @@ import { ru } from 'date-fns/locale';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
-type RoomType = 'standard' | 'deluxe' | 'suite';
+type RoomType = 'single5' | 'single4' | 'single1' | 'double5' | 'double4' | 'double1';
 
 const roomTypes = [
   { 
-    id: 'standard' as RoomType, 
+    id: 'single5' as RoomType, 
+    name: '1 местный номер V категории', 
+    price: 600, 
+    icon: 'User',
+    description: 'Базовые удобства для одного гостя',
+    features: ['Wi-Fi', 'Телевизор', 'Кондиционер'],
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/78fd1d66-464e-490e-86e8-de1f8fa17552.jpg'
+  },
+  { 
+    id: 'single4' as RoomType, 
+    name: '1 местный номер IV категории', 
+    price: 700, 
+    icon: 'Star',
+    description: 'Улучшенный номер для одного',
+    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон'],
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/de95bace-c237-4e13-ae43-85d479746e15.jpg'
+  },
+  { 
+    id: 'single1' as RoomType, 
+    name: '1 местный номер I категории', 
+    price: 1200, 
+    icon: 'Crown',
+    description: 'Премиум-номер с джакузи',
+    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи'],
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/d456ea70-fec7-41f6-8bdc-ea85092a168e.jpg'
+  },
+  { 
+    id: 'double5' as RoomType, 
     name: '2-х местный номер V категории', 
     price: 1100, 
-    icon: 'Bed',
-    description: 'Базовые удобства для комфортного проживания',
+    icon: 'Users',
+    description: 'Базовые удобства для двоих',
     features: ['Wi-Fi', 'Телевизор', 'Кондиционер'],
     image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/8a84185b-59e4-4280-9d1b-22db51a463d8.jpg'
   },
   { 
-    id: 'deluxe' as RoomType, 
+    id: 'double4' as RoomType, 
     name: '2-х местный номер IV категории', 
     price: 1300, 
     icon: 'Star',
@@ -32,11 +59,11 @@ const roomTypes = [
     image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/380c1015-5f20-4b82-b0f9-6717f1a44e88.jpg'
   },
   { 
-    id: 'suite' as RoomType, 
+    id: 'double1' as RoomType, 
     name: '2-х местный номер I категории', 
     price: 1600, 
     icon: 'Crown',
-    description: 'Премиум-номер с джакузи',
+    description: 'Премиум с джакузи для двоих',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи', 'Гостиная'],
     image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/a428009c-393a-4e5b-b9b4-142c0562f804.jpg'
   }
@@ -45,7 +72,7 @@ const roomTypes = [
 const Index = () => {
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
-  const [selectedRoom, setSelectedRoom] = useState<RoomType>('standard');
+  const [selectedRoom, setSelectedRoom] = useState<RoomType>('double5');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
