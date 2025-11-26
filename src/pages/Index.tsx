@@ -19,7 +19,8 @@ const roomTypes = [
     price: 3500, 
     icon: 'Bed',
     description: 'Уютный номер с базовым набором удобств',
-    features: ['Wi-Fi', 'Телевизор', 'Кондиционер']
+    features: ['Wi-Fi', 'Телевизор', 'Кондиционер'],
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/8a84185b-59e4-4280-9d1b-22db51a463d8.jpg'
   },
   { 
     id: 'deluxe' as RoomType, 
@@ -27,7 +28,8 @@ const roomTypes = [
     price: 6500, 
     icon: 'Star',
     description: 'Просторный номер с улучшенным интерьером',
-    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон']
+    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон'],
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/380c1015-5f20-4b82-b0f9-6717f1a44e88.jpg'
   },
   { 
     id: 'suite' as RoomType, 
@@ -35,7 +37,8 @@ const roomTypes = [
     price: 12000, 
     icon: 'Crown',
     description: 'Роскошный номер премиум-класса',
-    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи', 'Гостиная']
+    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи', 'Гостиная'],
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/a428009c-393a-4e5b-b9b4-142c0562f804.jpg'
   }
 ];
 
@@ -118,37 +121,50 @@ const Index = () => {
                   <div
                     key={room.id}
                     onClick={() => setSelectedRoom(room.id)}
-                    className={`cursor-pointer p-5 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
+                    className={`cursor-pointer rounded-xl border-2 transition-all duration-300 hover:scale-105 overflow-hidden ${
                       selectedRoom === room.id
-                        ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-pink-50 shadow-lg'
+                        ? 'border-purple-500 shadow-lg ring-2 ring-purple-300'
                         : 'border-gray-200 hover:border-purple-300'
                     }`}
                   >
-                    <div className="flex items-start justify-between mb-3">
-                      <Icon 
-                        name={room.icon} 
-                        size={32} 
-                        className={selectedRoom === room.id ? 'text-purple-600' : 'text-gray-400'}
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={room.image} 
+                        alt={room.name}
+                        className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
                       />
-                      {selectedRoom === room.id && (
-                        <div className="bg-purple-600 text-white rounded-full p-1">
-                          <Icon name="Check" size={16} />
+                      <div className="absolute top-3 right-3">
+                        {selectedRoom === room.id && (
+                          <div className="bg-purple-600 text-white rounded-full p-2 shadow-lg animate-scale-in">
+                            <Icon name="Check" size={20} />
+                          </div>
+                        )}
+                      </div>
+                      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+                        <div className="flex items-center gap-2 text-white">
+                          <Icon name={room.icon} size={24} />
+                          <h3 className="text-xl font-bold">{room.name}</h3>
                         </div>
-                      )}
+                      </div>
                     </div>
-                    <h3 className="text-xl font-bold text-gray-800 mb-2">{room.name}</h3>
-                    <p className="text-sm text-gray-600 mb-3">{room.description}</p>
-                    <div className="space-y-1 mb-4">
-                      {room.features.map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
-                          <Icon name="CheckCircle2" size={14} className="text-purple-500" />
-                          <span>{feature}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                      {room.price.toLocaleString('ru-RU')} ₽
-                      <span className="text-sm font-normal text-gray-500"> / ночь</span>
+                    <div className={`p-5 ${
+                      selectedRoom === room.id 
+                        ? 'bg-gradient-to-br from-purple-50 to-pink-50' 
+                        : 'bg-white'
+                    }`}>
+                      <p className="text-sm text-gray-600 mb-3">{room.description}</p>
+                      <div className="space-y-1 mb-4">
+                        {room.features.map((feature, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                            <Icon name="CheckCircle2" size={14} className="text-purple-500" />
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        {room.price.toLocaleString('ru-RU')} ₽
+                        <span className="text-sm font-normal text-gray-500"> / ночь</span>
+                      </div>
                     </div>
                   </div>
                 ))}
