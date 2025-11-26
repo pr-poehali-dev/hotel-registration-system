@@ -10,9 +10,39 @@ import { ru } from 'date-fns/locale';
 import Icon from '@/components/ui/icon';
 import { useToast } from '@/hooks/use-toast';
 
+type RoomType = 'standard' | 'deluxe' | 'suite';
+
+const roomTypes = [
+  { 
+    id: 'standard' as RoomType, 
+    name: 'Стандарт', 
+    price: 3500, 
+    icon: 'Bed',
+    description: 'Уютный номер с базовым набором удобств',
+    features: ['Wi-Fi', 'Телевизор', 'Кондиционер']
+  },
+  { 
+    id: 'deluxe' as RoomType, 
+    name: 'Люкс', 
+    price: 6500, 
+    icon: 'Star',
+    description: 'Просторный номер с улучшенным интерьером',
+    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон']
+  },
+  { 
+    id: 'suite' as RoomType, 
+    name: 'Апартаменты', 
+    price: 12000, 
+    icon: 'Crown',
+    description: 'Роскошный номер премиум-класса',
+    features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи', 'Гостиная']
+  }
+];
+
 const Index = () => {
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
+  const [selectedRoom, setSelectedRoom] = useState<RoomType>('standard');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -26,7 +56,8 @@ const Index = () => {
     ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
     : 0;
 
-  const pricePerNight = 5500;
+  const currentRoom = roomTypes.find(room => room.id === selectedRoom);
+  const pricePerNight = currentRoom?.price || 3500;
   const totalPrice = nights * pricePerNight;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,7 +87,7 @@ const Index = () => {
 
     toast({
       title: "Бронирование оформлено! 🎉",
-      description: `${formData.firstName}, ваше бронирование с ${format(checkIn, 'dd MMMM', { locale: ru })} по ${format(checkOut, 'dd MMMM', { locale: ru })} подтверждено`,
+      description: `${formData.firstName}, ваше бронирование номера "${currentRoom?.name}" с ${format(checkIn, 'dd MMMM', { locale: ru })} по ${format(checkOut, 'dd MMMM', { locale: ru })} подтверждено`,
     });
   };
 
@@ -71,6 +102,60 @@ const Index = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="max-w-5xl mx-auto space-y-6">
+          <Card className="shadow-xl border-2 border-purple-100 hover:shadow-2xl transition-all duration-300 animate-scale-in">
+            <CardHeader className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-t-xl">
+              <div className="flex items-center gap-3">
+                <Icon name="Home" size={28} className="text-white" />
+                <div>
+                  <CardTitle className="text-2xl">Выберите тип номера</CardTitle>
+                  <CardDescription className="text-purple-100">Найдите идеальный номер для себя</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid md:grid-cols-3 gap-4">
+                {roomTypes.map((room) => (
+                  <div
+                    key={room.id}
+                    onClick={() => setSelectedRoom(room.id)}
+                    className={`cursor-pointer p-5 rounded-xl border-2 transition-all duration-300 hover:scale-105 ${
+                      selectedRoom === room.id
+                        ? 'border-purple-500 bg-gradient-to-br from-purple-50 to-pink-50 shadow-lg'
+                        : 'border-gray-200 hover:border-purple-300'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <Icon 
+                        name={room.icon} 
+                        size={32} 
+                        className={selectedRoom === room.id ? 'text-purple-600' : 'text-gray-400'}
+                      />
+                      {selectedRoom === room.id && (
+                        <div className="bg-purple-600 text-white rounded-full p-1">
+                          <Icon name="Check" size={16} />
+                        </div>
+                      )}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">{room.name}</h3>
+                    <p className="text-sm text-gray-600 mb-3">{room.description}</p>
+                    <div className="space-y-1 mb-4">
+                      {room.features.map((feature, idx) => (
+                        <div key={idx} className="flex items-center gap-2 text-sm text-gray-600">
+                          <Icon name="CheckCircle2" size={14} className="text-purple-500" />
+                          <span>{feature}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                      {room.price.toLocaleString('ru-RU')} ₽
+                      <span className="text-sm font-normal text-gray-500"> / ночь</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
           <Card className="shadow-xl border-2 border-purple-100 hover:shadow-2xl transition-all duration-300 animate-scale-in">
             <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-t-xl">
               <div className="flex items-center gap-3">
