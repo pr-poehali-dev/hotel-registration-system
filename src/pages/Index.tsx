@@ -20,7 +20,8 @@ const roomTypes = [
     icon: 'User',
     description: 'Базовые удобства для одного гостя',
     features: ['Wi-Fi', 'Телевизор', 'Кондиционер'],
-    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/78fd1d66-464e-490e-86e8-de1f8fa17552.jpg'
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/78fd1d66-464e-490e-86e8-de1f8fa17552.jpg',
+    capacity: 1
   },
   { 
     id: 'single4' as RoomType, 
@@ -29,7 +30,8 @@ const roomTypes = [
     icon: 'Star',
     description: 'Улучшенный номер для одного',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон'],
-    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/de95bace-c237-4e13-ae43-85d479746e15.jpg'
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/de95bace-c237-4e13-ae43-85d479746e15.jpg',
+    capacity: 1
   },
   { 
     id: 'single1' as RoomType, 
@@ -38,7 +40,8 @@ const roomTypes = [
     icon: 'Crown',
     description: 'Премиум-номер с джакузи',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи'],
-    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/d456ea70-fec7-41f6-8bdc-ea85092a168e.jpg'
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/d456ea70-fec7-41f6-8bdc-ea85092a168e.jpg',
+    capacity: 1
   },
   { 
     id: 'double5' as RoomType, 
@@ -47,7 +50,8 @@ const roomTypes = [
     icon: 'Users',
     description: 'Базовые удобства для двоих',
     features: ['Wi-Fi', 'Телевизор', 'Кондиционер'],
-    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/8a84185b-59e4-4280-9d1b-22db51a463d8.jpg'
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/8a84185b-59e4-4280-9d1b-22db51a463d8.jpg',
+    capacity: 2
   },
   { 
     id: 'double4' as RoomType, 
@@ -56,7 +60,8 @@ const roomTypes = [
     icon: 'Star',
     description: 'Улучшенный интерьер с балконом',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон'],
-    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/380c1015-5f20-4b82-b0f9-6717f1a44e88.jpg'
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/380c1015-5f20-4b82-b0f9-6717f1a44e88.jpg',
+    capacity: 2
   },
   { 
     id: 'double1' as RoomType, 
@@ -65,13 +70,15 @@ const roomTypes = [
     icon: 'Crown',
     description: 'Премиум с джакузи для двоих',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи', 'Гостиная'],
-    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/a428009c-393a-4e5b-b9b4-142c0562f804.jpg'
+    image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/a428009c-393a-4e5b-b9b4-142c0562f804.jpg',
+    capacity: 2
   }
 ];
 
 const Index = () => {
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
+  const [capacityFilter, setCapacityFilter] = useState<number | null>(null);
   const [selectedRoom, setSelectedRoom] = useState<RoomType>('double5');
   const [formData, setFormData] = useState({
     firstName: '',
@@ -85,6 +92,10 @@ const Index = () => {
   const nights = checkIn && checkOut 
     ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24))
     : 0;
+
+  const filteredRooms = capacityFilter 
+    ? roomTypes.filter(room => room.capacity === capacityFilter)
+    : roomTypes;
 
   const currentRoom = roomTypes.find(room => room.id === selectedRoom);
   const pricePerNight = currentRoom?.price || 3500;
@@ -143,8 +154,55 @@ const Index = () => {
               </div>
             </CardHeader>
             <CardContent className="pt-6">
+              <div className="flex flex-wrap gap-3 mb-6 justify-center">
+                <Button
+                  type="button"
+                  variant={capacityFilter === null ? "default" : "outline"}
+                  onClick={() => {
+                    setCapacityFilter(null);
+                  }}
+                  className={capacityFilter === null 
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
+                    : ""}
+                >
+                  <Icon name="Home" size={18} className="mr-2" />
+                  Все номера
+                </Button>
+                <Button
+                  type="button"
+                  variant={capacityFilter === 1 ? "default" : "outline"}
+                  onClick={() => {
+                    setCapacityFilter(1);
+                    if (currentRoom?.capacity !== 1) {
+                      setSelectedRoom('single5');
+                    }
+                  }}
+                  className={capacityFilter === 1 
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
+                    : ""}
+                >
+                  <Icon name="User" size={18} className="mr-2" />
+                  1 человек
+                </Button>
+                <Button
+                  type="button"
+                  variant={capacityFilter === 2 ? "default" : "outline"}
+                  onClick={() => {
+                    setCapacityFilter(2);
+                    if (currentRoom?.capacity !== 2) {
+                      setSelectedRoom('double5');
+                    }
+                  }}
+                  className={capacityFilter === 2 
+                    ? "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700" 
+                    : ""}
+                >
+                  <Icon name="Users" size={18} className="mr-2" />
+                  2 человека
+                </Button>
+              </div>
               <div className="grid md:grid-cols-3 gap-4">
-                {roomTypes.map((room) => (
+                {filteredRooms.map((room) => (
                   <div
                     key={room.id}
                     onClick={() => setSelectedRoom(room.id)}
