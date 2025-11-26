@@ -15,28 +15,28 @@ type RoomType = 'standard' | 'deluxe' | 'suite';
 const roomTypes = [
   { 
     id: 'standard' as RoomType, 
-    name: 'Стандарт', 
-    price: 3500, 
+    name: '2-х местный номер V категории', 
+    price: 1100, 
     icon: 'Bed',
-    description: 'Уютный номер с базовым набором удобств',
+    description: 'Базовые удобства для комфортного проживания',
     features: ['Wi-Fi', 'Телевизор', 'Кондиционер'],
     image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/8a84185b-59e4-4280-9d1b-22db51a463d8.jpg'
   },
   { 
     id: 'deluxe' as RoomType, 
-    name: 'Люкс', 
-    price: 6500, 
+    name: '2-х местный номер IV категории', 
+    price: 1300, 
     icon: 'Star',
-    description: 'Просторный номер с улучшенным интерьером',
+    description: 'Улучшенный интерьер с балконом',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Балкон'],
     image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/380c1015-5f20-4b82-b0f9-6717f1a44e88.jpg'
   },
   { 
     id: 'suite' as RoomType, 
-    name: 'Апартаменты', 
-    price: 12000, 
+    name: '2-х местный номер I категории', 
+    price: 1600, 
     icon: 'Crown',
-    description: 'Роскошный номер премиум-класса',
+    description: 'Премиум-номер с джакузи',
     features: ['Wi-Fi', 'Телевизор', 'Мини-бар', 'Джакузи', 'Гостиная'],
     image: 'https://cdn.poehali.dev/projects/33f11a5a-5dc7-41ae-832e-8ab068a17f28/files/a428009c-393a-4e5b-b9b4-142c0562f804.jpg'
   }
